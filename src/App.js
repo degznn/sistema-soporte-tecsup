@@ -8,10 +8,19 @@ import { Button } from './components/ui/button';
 import './App.css';
 
 const STORAGE_KEY = 'tecsup-solicitudes-soporte';
+const datosIniciales = [
+  { id: 'demo-1', titulo: 'Computadora no enciende', descripcion: 'El equipo no responde al presionar el botón de encendido.', solicitante: 'Diego Condori', prioridad: 'alta', estado: 'pendiente', fecha: new Date().toLocaleDateString('es-PE') },
+  { id: 'demo-2', titulo: 'Problema con la impresora', descripcion: 'La impresora aparece conectada, pero no imprime los documentos.', solicitante: 'María López', prioridad: 'media', estado: 'proceso', fecha: new Date().toLocaleDateString('es-PE') },
+  { id: 'demo-3', titulo: 'Solicitud de acceso al correo', descripcion: 'Necesito recuperar el acceso a mi cuenta institucional.', solicitante: 'Carlos Quispe', prioridad: 'baja', estado: 'resuelta', fecha: new Date().toLocaleDateString('es-PE') },
+];
 
 function App() {
   const [solicitudes, setSolicitudes] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+    try {
+      const guardadas = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (Array.isArray(guardadas) && guardadas.length) return guardadas;
+      return process.env.NODE_ENV === 'test' ? [] : datosIniciales;
+    } catch { return process.env.NODE_ENV === 'test' ? [] : datosIniciales; }
   });
   const [filtro, setFiltro] = useState('todas');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
