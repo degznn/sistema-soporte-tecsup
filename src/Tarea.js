@@ -1,0 +1,3 @@
+import React, { useState } from 'react';
+function Tarea({ tarea, onDelete, onEdit, onToggleCompletada }) { const [editando, setEditando] = useState(false); const [texto, setTexto] = useState(tarea.texto); const guardar = () => { if (texto.trim()) { onEdit(texto.trim()); setEditando(false); } }; return <li className={tarea.completada ? 'completada' : ''}><input type="checkbox" checked={tarea.completada} onChange={onToggleCompletada} />{editando ? <><input type="text" value={texto} onChange={(e) => setTexto(e.target.value)} /><button onClick={guardar}>Guardar</button></> : <><span>{tarea.texto}</span><button onClick={() => setEditando(true)}>Editar</button><button onClick={onDelete}>Eliminar</button></>}</li>; }
+export default Tarea;
